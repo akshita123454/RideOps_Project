@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RideOps Operations Diagnosis & Intelligence System — Executive Report</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #0F172A;
+            background-color: #F8FAFC;
+            line-height: 1.5;
+            font-size: 13px;
+        }
+
+        .page-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .report-page {
+            padding: 40px 48px;
+            min-height: 1100px;
+            border-bottom: 2px dashed #E2E8F0;
+            position: relative;
+        }
+
+        .report-page:last-child {
+            border-bottom: none;
+        }
+
+        /* Header bar */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #1D4ED8;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0F172A;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-sub {
+            font-size: 11px;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .page-number {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1D4ED8;
+            background: #EFF6FF;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #BFDBFE;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0F172A;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1E40AF;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border-left: 3px solid #1D4ED8;
+            padding-left: 8px;
+        }
+
+        h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0F172A;
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+
+        p {
+            color: #334155;
+            margin-bottom: 10px;
+        }
+
+        .lead-text {
+            font-size: 13.5px;
+            color: #1E293B;
+            font-weight: 500;
+            margin-bottom: 14px;
+        }
+
+        /* Metric Grid */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 14px 0;
+        }
+
+        .metric-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 10px 14px;
+            background: #F8FAFC;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-val {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0F172A;
+            margin: 2px 0;
+        }
+
+        .metric-delta {
+            font-size: 10px;
+            color: #1D4ED8;
+            font-weight: 600;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 11.5px;
+        }
+
+        th {
+            background-color: #F1F5F9;
+            color: #1E293B;
+            font-weight: 700;
+            text-align: left;
+            padding: 7px 10px;
+            border-bottom: 1px solid #CBD5E1;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            font-size: 10px;
+        }
+
+        td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #E2E8F0;
+            color: #334155;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .highlight-row {
+            background-color: #EFF6FF;
+            font-weight: 600;
+        }
+
+        /* Alert / Callout */
+        .callout {
+            border-left: 3px solid #1D4ED8;
+            background: #F8FAFC;
+            padding: 10px 14px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+            border-top: 1px solid #E2E8F0;
+            border-right: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            color: #1E40AF;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: none;
+            }
+            .page-container {
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                max-width: 100%;
+            }
+            .report-page {
+                page-break-after: always;
+                border: none;
+                padding: 30px;
+                min-height: 98vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+
+    <!-- PAGE 1: DIAGNOSIS & EMPIRICAL FINDINGS -->
+    <div class="report-page">
+        <div class="page-header">
+            <div>
+                <div class="brand-title">RIDEOPS ENTERPRISE INTELLIGENCE</div>
+                <div class="brand-sub">Forward Deployed Engineer Case Study Submission · MoveInSync Review</div>
+            </div>
+            <div class="page-number">PAGE 1 OF 4</div>
+        </div>
+
+        <h1>Part 1: Operational Diagnosis & Empirical Root Causes</h1>
+        <p class="lead-text">
+            Between July and September 2026, RideOps experienced an apparent 60% surge in open support complaints. 
+            An exhaustive empirical analysis of all 1,444 ticket records reveals that the crisis is structural: 
+            inflow expanded by 51.8%, colliding with an operational throughput bottleneck driven by wasteful escalations and repeat software defects.
+        </p>
+
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-label">July Monthly Inflow</div>
+                <div class="metric-val">390</div>
+                <div class="metric-delta">11.3 tickets/agent/wk</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">September Inflow</div>
+                <div class="metric-val">592</div>
+                <div class="metric-delta">+51.8% Surge (17.1/wk)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Wasteful Escalation Rate</div>
+                <div class="metric-val">56.6%</div>
+                <div class="metric-delta">275 non-bug rejections</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Multi-Handoff Delay</div>
+                <div class="metric-val">128.5h</div>
+                <div class="metric-delta">229 ping-pong tickets</div>
+            </div>
+        </div>
+
+        <h2>Evaluation of Stakeholder Hypotheses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Stakeholder</th>
+                    <th>Perceived Root Cause</th>
+                    <th>Empirical Verdict</th>
+                    <th>Data Finding</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Meera</strong> (Support Lead)</td>
+                    <td>Engineering resolution lag is the primary bottleneck.</td>
+                    <td><strong>Partially True</strong></td>
+                    <td>Engineering takes 86.8h median, but 56.6% of escalations were preventable non-bugs.</td>
+                </tr>
+                <tr>
+                    <td><strong>Sandeep</strong> (Eng Manager)</td>
+                    <td>Support escalates tickets without basic checks.</td>
+                    <td><strong>Strongly Supported</strong></td>
+                    <td>275 of 486 escalations bounced back (89 missing basic diagnostic info).</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>Ritika</strong> (Head of Ops)</td>
+                    <td>Eliminate blame, reduce backlog without hiring.</td>
+                    <td><strong>Strategic Framework</strong></td>
+                    <td>The fix requires gating escalations at L1 and eradicating repeat bugs upstream.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>The Four Empirical Bottlenecks</h2>
+        <h3>1. The 56.6% Wasteful Escalation Tax</h3>
+        <p>
+            Out of 486 escalated cases, 275 were rejected by Engineering (89 insufficient info, 84 config issues, 56 known duplicates, 24 how-to queries, 22 non-reproducible). 
+            Escalation imposes an automatic 689% cycle time penalty: 12.6 hours median resolution at L1 vs. 86.8 hours when escalated.
+        </p>
+
+        <h3>2. The "Ping-Pong" Multi-Handoff Multiplier</h3>
+        <p>
+            229 tickets bounced between L1 and Engineering 2 or more times. While a single handoff resolves in 58.7h median, 2 handoffs take 110.4h, and 3 handoffs take 169.9h (7.1 days). 
+            89 tickets bounced back simply because L1 failed to attach basic configuration diagnostics.
+        </p>
+
+        <h3>3. Frontline Personnel Variance Outliers</h3>
+        <p>
+            Aggregated metrics concealed two extreme behavioral anomalies: <strong>Rahul T</strong> escalated 61.6% of all his tickets (vs. team average 31.8%), with 75.3% of his escalations being non-bugs. 
+            Conversely, <strong>Karan B</strong> exhibited a 16.1% escalation rate but suffered a 29.5% reopen rate (64 reopens) with an average CSAT of 2.00, having closed tickets prematurely without fixing the root cause.
+        </p>
+
+        <h3>4. 183 Tickets Attributable to 3 Software Flaws</h3>
+        <p>
+            12.7% of total company volume (183 tickets) stems from three recurring defects: "Booking cutoff changed but roster still uses old cutoff" (66 tickets), 
+            "Ad-hoc booking not reflecting" (60 tickets), and "Cancelled bookings appearing" (57 tickets).
+        </p>
+    </div>
+
+    <!-- PAGE 2: SUCCESS METRICS & OPERATIONAL FRAMEWORK -->
+    <div class="report-page">
+        <div class="page-header">
+            <div>
+                <div class="brand-title">RIDEOPS ENTERPRISE INTELLIGENCE</div>
+                <div class="brand-sub">Forward Deployed Engineer Case Study Submission · MoveInSync Review</div>
+            </div>
+            <div class="page-number">PAGE 2 OF 4</div>
+        </div>
+
+        <h1>Part 2: Operational Target Scorecard & Success Metrics</h1>
+        <p class="lead-text">
+            To achieve sustainable throughput improvement without increasing headcount, RideOps must govern support operations with an empirical balance sheet. 
+            Speed must not compromise quality, and escalation reductions must not create hidden backlog.
+        </p>
+
+        <h2>Quarterly KPI Commitment Table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Performance Indicator</th>
+                    <th>Current Baseline (Sep 2026)</th>
+                    <th>Quarter-End Target</th>
+                    <th>Cadence</th>
+                    <th>Operational Strategic Intent</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="highlight-row">
+                    <td><strong>Wasteful Escalation Rate (North Star)</strong></td>
+                    <td><strong>56.6%</strong> (275 / 486)</td>
+                    <td><strong>&le; 25.0%</strong></td>
+                    <td>Weekly</td>
+                    <td>Reclaims 8,000+ engineering hours and prevents queue ballooning.</td>
+                </tr>
+                <tr>
+                    <td><strong>Active Open Backlog</strong></td>
+                    <td>48 tickets pending</td>
+                    <td>&le; 20 tickets</td>
+                    <td>Daily</td>
+                    <td>Restores operational safety buffer against inflow surges.</td>
+                </tr>
+                <tr>
+                    <td><strong>Median Cycle Time (Resolution)</strong></td>
+                    <td>22.4 hours</td>
+                    <td>&le; 14.0 hours</td>
+                    <td>Weekly</td>
+                    <td>Reduces customer wait time across all issue categories.</td>
+                </tr>
+                <tr>
+                    <td><strong>Multi-Handoff Frequency (&ge;2 handoffs)</strong></td>
+                    <td>47.1% of escalations</td>
+                    <td>&le; 15.0% of escalations</td>
+                    <td>Weekly</td>
+                    <td>Eliminates ping-pong handoffs between L1 and Engineering.</td>
+                </tr>
+                <tr>
+                    <td><strong>Agent Escalation Disparity Delta</strong></td>
+                    <td>16% to 62% range</td>
+                    <td>&le; 15% team spread</td>
+                    <td>Weekly</td>
+                    <td>Standardizes frontline capability using guided playbooks.</td>
+                </tr>
+                <tr>
+                    <td><strong>Case Reopen Rate</strong></td>
+                    <td>11.5% (Sep)</td>
+                    <td>&le; 5.0%</td>
+                    <td>Weekly</td>
+                    <td>Terminates premature ticket closures (Karan B pattern).</td>
+                </tr>
+                <tr>
+                    <td><strong>Mean Corporate CSAT</strong></td>
+                    <td>3.65 / 5.0</td>
+                    <td>&ge; 4.20 / 5.0</td>
+                    <td>Monthly</td>
+                    <td>Directly driven by keeping resolution times under 24 hours.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Empirical Resolution Lag vs. CSAT Degradation</h2>
+        <p>
+            Cross-tabulation of CSAT ratings against resolution duration demonstrates a severe customer satisfaction cliff beyond 24 hours:
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Resolution Window</th>
+                    <th>Mean CSAT Rating</th>
+                    <th>Sample Volume</th>
+                    <th>Customer Perception & Impact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>&lt; 6 Hours</strong></td>
+                    <td>4.16 / 5.0</td>
+                    <td>89 ratings</td>
+                    <td>Excellent: Client operations proceed uninterrupted.</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>6 – 12 Hours</strong></td>
+                    <td>4.32 / 5.0</td>
+                    <td>128 ratings</td>
+                    <td>Optimal Benchmark: Standard same-day corporate SLA.</td>
+                </tr>
+                <tr>
+                    <td><strong>12 – 24 Hours</strong></td>
+                    <td>4.17 / 5.0</td>
+                    <td>111 ratings</td>
+                    <td>Acceptable: Overnight resolution before next commute shift.</td>
+                </tr>
+                <tr>
+                    <td><strong>24 – 48 Hours</strong></td>
+                    <td>3.78 / 5.0</td>
+                    <td>108 ratings</td>
+                    <td>Degradation: Escalated complaints begin frustrating transport admins.</td>
+                </tr>
+                <tr>
+                    <td><strong>48 – 96 Hours</strong></td>
+                    <td>3.35 / 5.0</td>
+                    <td>103 ratings</td>
+                    <td>Severe Friction: Corporate clients repeatedly call for updates.</td>
+                </tr>
+                <tr>
+                    <td><strong>&gt; 96 Hours</strong></td>
+                    <td>2.39 / 5.0</td>
+                    <td>109 ratings</td>
+                    <td>Critical Dissatisfaction: Multi-handoff tickets destroying account trust.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout">
+            <div class="callout-title">The North Star Operational Leverage</div>
+            <p>
+                <strong>Wasteful Escalation Rate is the sole leverage point.</strong> Intercepting 40% of non-bug escalations reclaims 8,250 engineering hours 
+                (equivalent to 15.8 engineer-months), collapses cycle times from 87h to 12h, and shifts CSAT into the 4.2+ tier without adding headcount.
+            </p>
+        </div>
+    </div>
+
+    <!-- PAGE 3: THE SYSTEM SOLUTION (NERVECENTER v0) -->
+    <div class="report-page">
+        <div class="page-header">
+            <div>
+                <div class="brand-title">RIDEOPS ENTERPRISE INTELLIGENCE</div>
+                <div class="brand-sub">Forward Deployed Engineer Case Study Submission · MoveInSync Review</div>
+            </div>
+            <div class="page-number">PAGE 3 OF 4</div>
+        </div>
+
+        <h1>Part 3: The System Solution (NerveCenter v0)</h1>
+        <p class="lead-text">
+            Rather than building a passive business intelligence dashboard, we engineered <strong>NerveCenter</strong>, 
+            an institutional decision-action system that models support as an industrial factory floor, enforcing quality gates and providing guided triage.
+        </p>
+
+        <h2>Theory of Constraints: Support as a Factory Floor</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Factory Concept</th>
+                    <th>Support Equivalent</th>
+                    <th>Observed Empirical Reality</th>
+                    <th>NerveCenter System Capability</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Throughput</strong></td>
+                    <td>Weekly Resolved Cases</td>
+                    <td>17.1 cases/agent/wk (Capacity ceiling)</td>
+                    <td>Throughput Dynamics Tracker (Inflow vs. Outflow)</td>
+                </tr>
+                <tr>
+                    <td><strong>Cycle Time</strong></td>
+                    <td>Resolution Duration</td>
+                    <td>12.6h (L1) vs. 86.8h (Engineering)</td>
+                    <td>Escalation Payoff Forecast & Benchmark Display</td>
+                </tr>
+                <tr>
+                    <td><strong>Rework</strong></td>
+                    <td>Case Reopen Rate</td>
+                    <td>11.5% (Karan B at 29.5%, CSAT 2.0)</td>
+                    <td>Premature Closure Audit & Gated Verification Window</td>
+                </tr>
+                <tr>
+                    <td><strong>Defect Rate</strong></td>
+                    <td>Wasteful Escalations</td>
+                    <td>56.6% rejected/non-bugs (275 cases)</td>
+                    <td>TF-IDF Ticket DNA Similarity & Risk Index</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>Bottleneck</strong></td>
+                    <td>L1-to-Engineering Handoff</td>
+                    <td>229 ping-pong cases (128.5h median)</td>
+                    <td>Mandatory Pre-Escalation Diagnostic Checklists</td>
+                </tr>
+                <tr>
+                    <td><strong>Root Cause</strong></td>
+                    <td>Platform Software Bugs</td>
+                    <td>183 cases from 3 roster defects</td>
+                    <td>Two-Pass NLP Clustering & Jira Defect Generator</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Core Architectural Engines</h2>
+        <h3>1. Frontline Resolution Console & Ticket DNA Engine (engine/ticket_dna.py)</h3>
+        <p>
+            When an L1 agent opens an assigned ticket, a sublinear TF-IDF vectorizer queries 1,396 historical closures to surface the top 5 most similar precedent cases. 
+            The console displays whether past escalations bounced back, the exact historical resolution playbook, and an <strong>Escalation Risk Index (0–100%)</strong> 
+            demonstrating the operational cost: 12h resolution at L1 vs. 87h delay if escalated.
+        </p>
+
+        <h3>2. Mandatory Diagnostic Protocol & Operational Action Gating (pages/1_Agent_Cockpit.py)</h3>
+        <p>
+            To eliminate the 89 cases bounced for "Insufficient info", the console introduces a physical gate: 
+            the "Escalate to Engineering" button remains programmatically disabled until the agent verifies each category-specific diagnostic check.
+        </p>
+
+        <h3>3. Upstream Defect Detection & Spec Generator (engine/bug_cluster.py)</h3>
+        <p>
+            A two-pass clustering engine combines exact description hashing with fuzzy cosine similarity (threshold 0.75) to isolate recurring defects. 
+            It automatically formats production-ready engineering specifications complete with affected enterprise client lists, sample ticket IDs, and technical hypotheses.
+        </p>
+
+        <h3>4. Executive Operations Command & What-If Simulator (pages/2_Ops_Command.py)</h3>
+        <p>
+            Provides leadership with net backlog trajectory modeling, personnel distribution heatmaps, and a 1-click executive memorandum generator.
+        </p>
+    </div>
+
+    <!-- PAGE 4: FOUR-WEEK ROLLOUT & EXECUTION PLAN -->
+    <div class="report-page">
+        <div class="page-header">
+            <div>
+                <div class="brand-title">RIDEOPS ENTERPRISE INTELLIGENCE</div>
+                <div class="brand-sub">Forward Deployed Engineer Case Study Submission · MoveInSync Review</div>
+            </div>
+            <div class="page-number">PAGE 4 OF 4</div>
+        </div>
+
+        <h1>Part 4: Four-Week Phased Execution Plan</h1>
+        <p class="lead-text">
+            A disciplined four-week operational deployment sequence to stabilize queue health, enforce frontline quality standards, 
+            and permanently eliminate repeat software defects upstream.
+        </p>
+
+        <h2>Phased Implementation Roadmap</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Phase / Timeline</th>
+                    <th>Core Deliverables & Actions</th>
+                    <th>Owner</th>
+                    <th>Expected Milestone Outcome</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="highlight-row">
+                    <td><strong>WEEK 1<br>Triage Guardrails & Policy SLA</strong></td>
+                    <td>
+                        &bull; Deploy Frontline Console v0 to all 8 support specialists.<br>
+                        &bull; Enforce mandatory pre-escalation diagnostic checklist.<br>
+                        &bull; Engineering SLA: Rejection of any unverified escalation.<br>
+                        &bull; Convert 56 known duplicates into one-click canned playbooks.
+                    </td>
+                    <td>FDE + Meera + Sandeep</td>
+                    <td>Wasteful escalations drop from 56.6% to &le; 35%. "Insufficient info" bounces eliminated.</td>
+                </tr>
+                <tr>
+                    <td><strong>WEEK 2<br>Behavioral Coaching & Audit</strong></td>
+                    <td>
+                        &bull; 1-on-1 coaching for Rahul T to reduce 61.6% escalation rate.<br>
+                        &bull; Implement 48h client verification window for Karan B.<br>
+                        &bull; Institute Monday 08:00 executive review using Ops Command.<br>
+                        &bull; Track agent escalation spread across team.
+                    </td>
+                    <td>Meera + Ritika</td>
+                    <td>Rahul T escalation rate &le; 35%; Karan B reopen rate drops under 10%. Team variance stabilizes.</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>WEEK 3<br>Upstream Defect Patch Sprint</strong></td>
+                    <td>
+                        &bull; Engineering sprint dedicated to top 3 Bug Radar clusters (Roster sync cutoff race condition, ad-hoc sync delay, export timeouts).<br>
+                        &bull; Implement skill-based routing for complex roster accounts.<br>
+                        &bull; Release self-serve roster purge tool to enterprise client admins.
+                    </td>
+                    <td>Sandeep + FDE</td>
+                    <td>183 repeat tickets eradicated upstream (~60 fewer inbound tickets per month).</td>
+                </tr>
+                <tr>
+                    <td><strong>WEEK 4<br>Institutional SOPs & Transition</strong></td>
+                    <td>
+                        &bull; Document operational runbooks for maintaining checklists.<br>
+                        &bull; Automate Monday Executive Briefing memorandum distribution.<br>
+                        &bull; Formal audit against baseline: BPI &le; 30, open tickets &le; 20.<br>
+                        &bull; Executive handoff to Ritika, Meera, and Sandeep.
+                    </td>
+                    <td>FDE + Ritika</td>
+                    <td>Sustainable, self-maintaining operational system with zero additional headcount required.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Explicit Operational Non-Goals (What We Will NOT Do)</h2>
+        <div class="callout">
+            <div class="callout-title">Strategic Boundaries & Disciplined Focus</div>
+            <p style="margin-bottom: 6px;">
+                <strong>1. No Headcount Additions:</strong> We will not hire additional L1 agents or dedicated support engineers. The solution is throughput efficiency and waste elimination.
+            </p>
+            <p style="margin-bottom: 6px;">
+                <strong>2. No Ticketing System Replacement:</strong> We will not replace Jira or the client portal. NerveCenter operates as a lightweight intelligence layer on top of existing infrastructure.
+            </p>
+            <p style="margin-bottom: 6px;">
+                <strong>3. No Unexplainable AI / Cost Overhead:</strong> We will not introduce external LLM endpoints for basic vector search. Sublinear TF-IDF is deterministic, instant, free, and adheres to ISO/GDPR corporate client data boundaries.
+            </p>
+            <p>
+                <strong>4. No Customer-Facing Scope Creep:</strong> We will not build an unmoderated client-facing ticket portal that would invite additional frivolous inbound volume.
+            </p>
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 12px; border-top: 1px solid #E2E8F0; font-size: 11px; color: #64748B; display: flex; justify-content: space-between;">
+            <span>RideOps Technologies · Operations Engineering Division</span>
+            <span>Confidential · For Internal Hiring Review Only</span>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
