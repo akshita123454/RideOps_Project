@@ -243,3 +243,34 @@ def weekly_digest(df: pd.DataFrame) -> str:
         "— Automated Report · RideOps Operations Intelligence",
     ]
     return "\n".join(lines)
+def decompose_backlog_growth(df: pd.DataFrame) -> dict:
+    """Attribute backlog growth to inflow (lambda) vs cycle time (W).
+
+    Little's Law: L = lambda * W  (open backlog = arrival rate * avg cycle time)
+    Growth decomposition: dL ~= W*d(lambda) + lambda*d(W) + d(lambda)*d(W)
+    """
+    inflow = df.groupby("created_month").size()                          # lambda
+    closed = df[df["final_closed_at"].notna()]
+    cycle = closed.groupby("created_month")["resolution_hrs"].median()   # W
+
+    lam_jul, lam_sep = int(inflow.iloc[0]), int(inflow.iloc[-1])
+    w_jul, w_sep = float(cycle.iloc[0]), float(cycle.iloc[-1])
+    l_jul, l_sep = lam_jul * w_jul, lam_sep * w_sep                      # L = lambda * W
+
+    d_lam = lam_sep - lam_jul
+    d_w = w_sep - w_jul
+    from_inflow = w_jul * d_lam
+    from_cycle = lam_jul * d_w
+    from_interaction = d_lam * d_w
+
+    return {
+        "lambda_jul": lam_jul,
+        "lambda_sep": lam_sep,
+        "w_jul": round(w_jul, 1),
+        "w_sep": round(w_sep, 1),
+        "l_jul": round(l_jul, 0),
+        "l_sep": round(l_sep, 0),
+        "from_inflow": round(from_inflow, 1),
+        "from_cycle": round(from_cycle, 1),
+        "from_interaction": round(from_interaction, 1),
+    }

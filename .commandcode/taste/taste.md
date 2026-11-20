@@ -1,0 +1,3 @@
+- Prefers novel, out-of-the-box, non-generic solutions that don't look "AI-made"; dislikes boilerplate or cliché approaches that "everyone does." Confidence: 0.8
+- Values realistic, data-grounded answers over theory or assumptions; wants findings supported by actual evidence. Confidence: 0.7
+- When implementing a plan, wants complete, copy-paste-ready code files with clear file paths and create/replace/append instructions rather than conceptual explanations or fragments. Confidence: 0.8
