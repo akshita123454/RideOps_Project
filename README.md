@@ -7,25 +7,25 @@
 <style>
   :root {
     --ink: #0F172A;
+    --body: #1E293B;
     --muted: #475569;
     --faint: #64748B;
     --border: #E2E8F0;
     --navy: #1E40AF;
-    --blue: #1D4ED8;
     --green: #047857;
     --red: #B91C1C;
     --amber: #B45309;
   }
   * { box-sizing: border-box; }
+  html, body { background: #FFFFFF; }
   body {
     margin: 0;
-    background: #FFFFFF;
     color: var(--ink);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.55;
   }
   .wrap { max-width: 960px; margin: 0 auto; padding: 40px 32px 72px; }
-  h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; color: #0F172A; }
   .subtitle { color: var(--muted); font-size: 1rem; margin: 0 0 28px; }
   h2 {
     font-size: 1.15rem; font-weight: 600; color: #1E3A8A;
@@ -33,6 +33,8 @@
     padding-bottom: 8px; border-bottom: 1px solid var(--border);
   }
   p { margin: 10px 0; color: #1E293B; }
+  li { margin: 5px 0; color: #1E293B; }
+  strong { color: #0F172A; }
   code {
     background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 4px;
     padding: 1px 5px; font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
@@ -42,11 +44,13 @@
     background: #0F172A; color: #E2E8F0; padding: 16px 18px; border-radius: 6px;
     overflow-x: auto; font-size: 0.85rem; line-height: 1.6;
     font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    white-space: pre;
   }
-  pre code { background: none; border: none; padding: 0; color: inherit; }
+  pre code { background: none; border: none; padding: 0; color: #E2E8F0; }
   table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
   th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #F1F5F9; vertical-align: top; }
   th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+  td { color: #1E293B; }
   tr:hover td { background: #F8FAFC; }
   .card {
     background: #FFFFFF; border: 1px solid var(--border); border-radius: 6px;
@@ -58,13 +62,12 @@
   }
   .loops { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
   @media (max-width: 680px) { .loops { grid-template-columns: 1fr; } }
-  .loop { border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; }
+  .loop { border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; color: #1E293B; }
   .loop-visible { border-left: 4px solid var(--amber); }
   .loop-hidden { border-left: 4px solid var(--red); }
-  .loop strong { display: block; font-size: 0.9rem; margin-bottom: 6px; }
+  .loop strong { display: block; font-size: 0.9rem; margin-bottom: 6px; color: #0F172A; }
   .muted { color: var(--faint); }
-  ul { margin: 8px 0; padding-left: 22px; }
-  li { margin: 5px 0; }
+  ul, ol { margin: 8px 0; padding-left: 22px; }
 </style>
 </head>
 <body>
